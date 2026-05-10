@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un produit
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<h1 class="mb-4">Ajouter un nouveau jeu</h1>
+
+			<div class="card shadow-sm">
+				<div class="card-body">
+					{{ form_start(form) }}
+					{# Starting form like form html tag  #}
+					{{ form_widget(form) }}
+					{# Auto generate the fields Product based on Entity #}
+					<div class="mt-4 d-flex justify-content-between">
+						<a href="{{ path('admin_product_index') }}" class="btn btn-secondary">Retour à la liste</a>
+						<button class="btn btn-success">{{ button_label|default('Ajouter') }}</button>
+					</div>
+					{{ form_end(form) }}
+					{# Closing form  #}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
