@@ -2,39 +2,29 @@
 
 namespace App\Entity;
 
+use App\Repository\ProduitRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
- */
+#[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $prix;
+    #[ORM\Column]
+    private ?int $prix = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $description;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $image;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
