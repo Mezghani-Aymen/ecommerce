@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Admin - Produits
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h1>Gestion des Produits</h1>
+		<a href="{{ path('admin_product_add') }}" class="btn btn-primary">
+			<i class="bi bi-plus-circle"></i>
+			Ajouter un produit</a>
+	</div>
+
+	{% for label, messages in app.flashes %} {# Flashes: Temporary notification #}
+		{% for message in messages %}
+			<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endfor %}
+	{% endfor %}
+
+	<div class="table-responsive">
+		<table class="table table-striped table-hover align-middle">
+			<thead class="table-dark">
+				<tr>
+					<th>Id</th>
+					<th>Image</th>
+					<th>Nom</th>
+					<th>Prix</th>
+					<th>Description</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for produit in produits %}
+					<tr>
+						<td>{{ produit.id }}</td>
+						<td>
+							{% if produit.image %}
+								<img src="{{ produit.image }}" alt="{{ produit.nom }}" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;">
+							{% endif %}
+						</td>
+						<td>{{ produit.nom }}</td>
+						<td>{{ produit.prix }}
+							€</td>
+						<td>{{ produit.description|slice(0, 50) ~ '...' }}</td>
+						<td class="text-center">
+							<a href="{{ path('admin_product_edit', {'id': produit.id}) }}" class="btn btn-sm btn-warning mb-1">
+								<i class="bi bi-pencil"></i>
+								Modifier</a>
+							<button type="button" class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal{{ produit.id }}">
+								<i class="bi bi-trash"></i>
+								Supprimer
+							</button>
+
+							<!-- Modal de suppression -->
+							<div class="modal fade text-start" id="deleteModal{{ produit.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ produit.id }}" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header bg-danger text-white">
+											<h5 class="modal-title" id="deleteModalLabel{{ produit.id }}">Confirmer la suppression</h5>
+											<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											Êtes-vous sûr de vouloir supprimer le jeu
+											<strong>{{ produit.nom }}</strong>
+											?
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+											<form method="post" action="{{ path('admin_product_delete', {'id': produit.id}) }}" style="display: inline-block">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.id) }}">
+												<button type="submit" class="btn btn-danger">Oui, supprimer</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="6" class="text-center">Aucun produit trouvé</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
