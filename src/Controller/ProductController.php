@@ -25,8 +25,8 @@ class ProductController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/add", name="admin_product_add", methods={"POST"})
+     /**
+     * @Route("/add", name="admin_product_add", methods={"GET", "POST"})
      */
     public function add(Request $request, ProduitRepository $produitRepository): Response
     {
