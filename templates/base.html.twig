@@ -59,15 +59,20 @@
 
 						{% if app.user %}
 							{# Check Authentication ==> app.user = null (anonymous) Else User (admin)  #}
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('admin_product_index') }}">Espace Admin</a>
-							</li>
+							{% if is_granted('ROLE_ADMIN') %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('admin_product_index') }}">Espace Admin</a>
+								</li>
+							{% endif %}
 							<li class="nav-item">
 								<a class="nav-link btn btn-outline-danger ms-2 btn-sm mt-1" href="{{ path('app_logout') }}">Déconnexion</a>
 							</li>
 						{% else %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('app_register') }}">S'inscrire</a>
 							</li>
 						{% endif %}
 					</ul>
