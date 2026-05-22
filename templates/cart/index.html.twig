@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier
+{% endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-10 offset-md-1">
+			<h1 class="mb-4">Mon Panier</h1>
+
+			{% for label, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+			{% if items | length > 0 %}
+				<div class="table-responsive shadow-sm bg-white rounded p-3">
+					<table class="table align-middle">
+						<thead>
+							<tr>
+								<th>Produit</th>
+								<th>Prix</th>
+								<th>Quantité</th>
+								<th>Total</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in items %}
+								<tr>
+									<td>
+										<div class="d-flex align-items-center">
+											{% if item.produit.image %}
+												<img src="{{ item.produit.image }}" alt="{{ item.produit.nom }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; object-fit: cover;">
+											{% endif %}
+											<strong>{{ item.produit.nom }}</strong>
+										</div>
+									</td>
+									<td>{{ item.produit.prix }}
+										€</td>
+									<td>
+										<form action="{{ path('cart_update', {'id': item.produit.id}) }}" method="post" class="d-flex align-items-center">
+											<input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm me-2" style="width: 70px;">
+											<button type="submit" class="btn btn-sm btn-outline-primary">
+												<i class="bi bi-arrow-repeat"></i>
+											</button>
+										</form>
+									</td>
+									<td>{{ item.produit.prix * item.quantity }}
+										€</td>
+									<td class="text-end">
+										<a href="{{ path('cart_remove', {'id': item.produit.id}) }}" class="btn btn-sm btn-outline-danger">
+											<i class="bi bi-trash"></i>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3" class="text-end fw-bold">Total Général :</td>
+								<td class="fw-bold fs-5">{{ total }}
+									€</td>
+								<td></td>
+							</tr>
+						</tfoot>
+					</table>
+					<div class="d-flex justify-content-between mt-4">
+						<a href="{{ path('home') }}" class="btn btn-secondary">Continuer mes achats</a>
+						<a href="{{ path('order_checkout') }}" class="btn btn-success">Passer la commande</a>
+					</div>
+				</div>
+			{% else %}
+				<div class="alert alert-info text-center p-5 shadow-sm">
+					<h4>Votre panier est vide</h4>
+					<p class="mb-0">Ajoutez quelques jeux pour commencer !</p>
+					<a href="{{ path('home') }}" class="btn btn-primary mt-3">Voir la boutique</a>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
