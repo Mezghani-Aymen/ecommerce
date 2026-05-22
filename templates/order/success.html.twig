@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande Confirmée{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center py-5">
+            <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            <h1 class="mt-4">Merci pour votre commande !</h1>
+            <p class="lead">Votre commande n° <strong>{{ commande.id }}</strong> a été enregistrée avec succès.</p>
+            <p>Un email de confirmation vous sera envoyé prochainement (simulation).</p>
+            
+            <div class="card shadow-sm mt-5 text-start">
+                <div class="card-body">
+                    <h5 class="card-title">Récapitulatif de votre commande</h5>
+                    <ul class="list-group list-group-flush mt-3">
+                        {% for item in commande.items %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ item.produit.nom }}</strong> x{{ item.quantite }}
+                                </div>
+                                <span>{{ item.produit.prix * item.quantite }} €</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="card-footer bg-white text-end fw-bold fs-5 mt-3">
+                        Total Payé : {{ commande.total }} €
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <a href="{{ path('home') }}" class="btn btn-primary">Retour à la boutique</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
